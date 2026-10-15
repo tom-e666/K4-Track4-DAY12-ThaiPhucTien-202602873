@@ -23,7 +23,12 @@ def rule_closed_loop_logs(c, b, margin=0.01):
     # TODO (Bước 6): hãy tự cài hàm này. Gợi ý:
     #   Quy tắc không-kém-hơn: pass khi CẬN TRÊN 95% của ứng viên <= tỷ lệ va chạm của baseline + margin.
     #   Trả (ok, chuỗi mô tả) với chuỗi nêu số của cả hai bên.
-    raise NotImplementedError("TODO rule_closed_loop_logs: xem GUIDE.md, Bước 6")
+    upper = c["collision"]["ci95"][1]
+    base_rate = b["collision"]["rate"]
+    passed = bool(upper <= base_rate + margin)
+    cand_rate = c["collision"]["rate"]
+    detail = f"{cand_rate*100:.1f} % (upper {upper*100:.1f} %) vs baseline {base_rate*100:.1f} % + {margin*100:.1f} point"
+    return passed, detail
 
 
 def rule_scenario_grid(area_candidate, area_baseline, margin=0.02):
@@ -31,7 +36,9 @@ def rule_scenario_grid(area_candidate, area_baseline, margin=0.02):
     Pass when candidate <= baseline + margin. Returns (passed: bool, detail: str)."""
     # TODO (Bước 6): hãy tự cài hàm này. Gợi ý:
     #   pass khi diện tích của ứng viên <= diện tích của baseline + margin. Trả (ok, chuỗi mô tả).
-    raise NotImplementedError("TODO rule_scenario_grid: xem GUIDE.md, Bước 6")
+    passed = bool(area_candidate <= area_baseline + margin)
+    detail = f"{area_candidate*100:.1f} % vs baseline {area_baseline*100:.1f} % + {margin*100:.1f} points"
+    return passed, detail
 
 
 def evaluate(candidate, baseline, ev):
